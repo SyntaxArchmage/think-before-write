@@ -1,21 +1,25 @@
 ---
 name: academic-writing
-description: "Use when implementing Layer 4-5 prose for confirmed storyline subsections, reconciling brownfield drafts against L3, or running QC before paper-review. Two tracks: full QC (Track A) and fast reconciliation (Track B). CroqTile paper, June 10 deadline."
+description: "Use when writing or rewriting paper sections, implementing paragraph prose, checking draft quality, or when user says 'write §X', 'rewrite introduction', 'fix prose', 'QC section', 'reconcile draft'. Reads confirmed storyline first (L3 is authoritative), then writes prose using main agent (no subagents for quality-critical writing)."
 ---
 
 # Academic Writing (Layer 4–5 + QC)
 
 **Upstream**: `paper-storyline` (Layers 0–3). **This skill owns Layer 4–5 execution and quality gates.**
 
+**RULE 0 GATE** (from `paper-writing.mdc`): Before doing ANYTHING, read `plan/storyline-state.md` and verify L3 is confirmed for the target subsection. If not confirmed → STOP, activate `paper-storyline` instead. This is non-negotiable.
+
 Brownfield context: ~1640-line draft exists. All Layer 3 confirmed (2026-05-28). Layer 4–5 pending. Deadline: **June 10, 2026** (~13 days from May 28).
 
-**Priority order**: storyline correctness → number accuracy → claim-evidence alignment → prose quality → de-AI polish.
+**Priority order**: L3 storyline correctness → number accuracy → claim-evidence alignment → prose quality → de-AI polish.
+
+**HARD RULE**: The confirmed L3 paragraph map in `plan/storyline-state.md` is the AUTHORITATIVE source for each paragraph's job, focus, and content. Reference patterns (`systems-writing-patterns.md`, `systems-sentence-bank.md`) are subordinate STYLE guidance — they inform HOW to phrase and structure sentences, NOT what topic or argument a paragraph makes. Never let a generic pattern override L3.
+
+**EXECUTION RULE**: All L5 prose writing is done by the MAIN AGENT. No subagents for quality-critical paragraph writing — they lose accumulated storyline context and produce drift.
 
 ---
 
 ## When to Activate
-
-**See `paper-writing-router.md` for activation decision tree.**
 
 Activate when:
 - User says "write §X", "implement paragraph plan", "reconcile section", "QC subsection", "fix prose vs storyline"
@@ -439,9 +443,9 @@ cd paper && tectonic main.tex
 
 ## Best-of-N Subagent Modes
 
-**Budget**: See `best-of-N-protocol.md` § Session Budget before launching.
+When a mode below applies, launch **N parallel subagents** instead of single-agent execution. Each variant must pass the mode's QC gate before presentation.
 
-When a mode below applies, launch **N parallel subagents** instead of single-agent execution. Use the prompt template and selection protocol in [`best-of-N-protocol.md`](../best-of-N-protocol.md). Each variant must pass the mode's QC gate before presentation.
+**Cost awareness**: Best-of-N multiplies token cost by N. Only use for abstract (N=5) and de-AI polish (N=3). All other L5 writing uses the main agent directly — subagents lose storyline fidelity.
 
 ### Mode 1: Abstract Best-of-N (N=5)
 
@@ -457,19 +461,11 @@ When a mode below applies, launch **N parallel subagents** instead of single-age
 
 **Selection**: Present all 5 side-by-side; author picks or fuses.
 
-### Mode 2: L5 Paragraph Writing (N=3)
+### Mode 2: L5 Paragraph Writing — DISABLED
 
-**When**: Track A, Layer 5 implementation for any confirmed L4 paragraph plan.
+**Status**: REMOVED. L5 paragraph writing MUST be done by the main agent (not subagents) to preserve storyline fidelity. Subagents lose the iterative context of WHY each L3 decision was made and reinterpret freely, causing drift from confirmed storyline.
 
-**Why**: Paragraph-level prose has meaningful style variation; 3 attempts efficient.
-
-**Constraints shared**: L4 writing plan (archetype, topic sentence, body, form, length), paragraph contract (6 rules), terminology matrix, number provenance from manifest.
-
-**Creative latitude**: Sentence structure, evidence ordering within paragraph, transition style, voice register, level of technical depth.
-
-**Each variant must**: Satisfy paragraph contract; use correct L4 archetype; topic sentence matches L3.
-
-**Selection**: Author picks or "take opening from V1, evidence from V3".
+**Rule**: All L5 writing uses the main agent directly. The main agent has accumulated context from L0–L4 discussions and understands the user's intent behind each paragraph.
 
 ### Mode 3: De-AI Polish (N=3)
 
@@ -499,14 +495,14 @@ When a mode below applies, launch **N parallel subagents** instead of single-age
 
 **Selection**: Author picks the path that preserves most of their existing voice.
 
-**Cost awareness**: Best-of-N multiplies token cost by N. Reserve N=5 for abstract only; use N=3 elsewhere. On T-7/T-2 deadline tiers, skip best-of-N unless the user explicitly requests it or the subsection is on the critical path (§1 Intro, §4 Evaluation).
+**Deadline tiers**: On T-7/T-2, skip best-of-N unless the user explicitly requests it.
 
 ---
 
 ## Session Checklist (agent)
 
-0. Read `references/systems-writing-patterns.md` (all sections); `references/systems-eval-methodology.md` (§4 Eval); `references/systems-sentence-bank.md` (L5 drafting); `references/systems-anti-patterns.md` (QC Round 1/3)
-1. Read `plan/storyline-state.md` — confirm L3 for target subsection
+0. **Read `plan/storyline-state.md`** — load L3 paragraph map for target subsection. **This is the source of truth for WHAT each paragraph says.** Do not deviate from confirmed L3 content.
+1. Read `references/systems-writing-patterns.md` (style guidance for HOW to write); `references/systems-sentence-bank.md` (structural templates); `references/systems-anti-patterns.md` (QC); `references/systems-eval-methodology.md` (§4 only)
 2. Choose Track A or B (default B for existing draft)
 3. Track B: reconcile → route issues
 4. Track A: L4 plan → approval → L5 write → tectonic
@@ -514,3 +510,5 @@ When a mode below applies, launch **N parallel subagents** instead of single-age
 6. Score anchors only; lint rest
 7. Update state file; hand `qc-pass` subsections to review
 8. Respect iteration budget and T-2 freeze
+
+**CRITICAL PRIORITY**: L3 storyline > reference patterns. Reference patterns guide sentence structure and style, but the CONTENT and FOCUS of each paragraph is dictated by L3. If a pattern conflicts with L3 (e.g., pattern says "open with bottleneck" but L3 says "open with significance"), follow L3.

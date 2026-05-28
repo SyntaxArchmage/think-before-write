@@ -1,13 +1,21 @@
 ---
 name: author-supervisor
-description: "Embedded advisor ensemble for CroqTile ATC 2026. NOT a standalone workflow — invoked WITHIN storyline, writing, and review steps for short-term advice. Launches 5 parallel professor subagents (different lenses) per consultation, returns diverse perspectives for the author to pick from."
+description: "Use when seeking expert opinions on paper decisions, wanting multiple perspectives on a design choice, or when user says 'get professor advice', 'what would reviewers think', 'advisor perspective'. Provides 5 professor lenses (systems, compilers, ML, HPC, writing) for short-term advisory within writing/review steps."
 ---
 
 # Author Supervisor (Embedded Advisor Ensemble)
 
+**RULE 0 GATE**: Before advising, read `plan/storyline-state.md` for context. Advice must be grounded in the confirmed storyline — not in abstract "best practices" that contradict L3.
+
 **Not a workflow stage. An embedded consultation tool.**
 
 The supervisor is invoked *within* each existing workflow step — during storyline alignment, during writing, during review — whenever the author needs short-term strategic advice. It launches **5 parallel subagents**, each with a distinct professor lens, and returns **diverse, independent perspectives** for the author to choose from.
+
+**Auto-trigger conditions** (agent should invoke supervisor automatically when):
+- About to make a major structural decision (reorder paragraphs, add/remove content not in L3)
+- Detecting conflicting options in a design/phrasing choice
+- Completing a full subsection draft (post-L5, pre-review) — quick sanity check
+- User expresses uncertainty about a paragraph or asks "is this good?"
 
 ```
 storyline (any layer)  ──→  @supervisor ──→ 5 parallel professors ──→ diverse advice

@@ -1,9 +1,11 @@
 ---
 name: paper-review
-description: "Use before submission, after major edits, or on rebuttal prep for CroqTile ATC 2026. Runs 3-reviewer + PE + Meta-PC simulation, Tier A/B rubric, Issue Cards, reconciliation, submission gate. Deadline June 10, 2026."
+description: "Use when reviewing completed sections, simulating peer review, checking submission readiness, or when user says 'review §X', 'simulate reviewers', 'submission check', 'is this ready'. Runs 3-reviewer + PE + Meta-PC simulation with Tier A/B rubric and Issue Cards."
 ---
 
 # Paper Review (CroqTile ATC 2026)
+
+**RULE 0 GATE**: Before reviewing, read `plan/storyline-state.md` and verify L3 is confirmed for target subsection. Review requires storyline context to evaluate alignment.
 
 Simulated PC review for **CroqTile: A GPU Kernel Programming Language Designed for AI Tuning** (ATC 2026, 12pp excl. refs, anonymous). **Deadline: June 10, 2026.**
 
