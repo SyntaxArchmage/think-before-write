@@ -521,13 +521,23 @@ When a mode below applies, launch **N parallel subagents** instead of single-age
 ## Session Checklist (agent)
 
 0. **Read `plan/storyline-state.md`** — load L3 paragraph map for target subsection. **This is the source of truth for WHAT each paragraph says.** Do not deviate from confirmed L3 content.
-1. Read `references/systems-writing-patterns.md` (style guidance for HOW to write); `references/systems-sentence-bank.md` (structural templates); `references/systems-anti-patterns.md` (QC); `references/systems-eval-methodology.md` (§4 only)
-2. Choose Track A or B (default B for existing draft)
-3. Track B: reconcile → route issues
-4. Track A: L4 plan → approval → L5 write → tectonic
-5. QC R1 → R2 → R3 (respect deadline tier)
-6. Score anchors only; lint rest
-7. Update state file; hand `qc-pass` subsections to review
-8. Respect iteration budget and T-2 freeze
 
-**CRITICAL PRIORITY**: L3 storyline > reference patterns. Reference patterns guide sentence structure and style, but the CONTENT and FOCUS of each paragraph is dictated by L3. If a pattern conflicts with L3 (e.g., pattern says "open with bottleneck" but L3 says "open with significance"), follow L3.
+1. **Read reference papers for the target section** (MANDATORY — do NOT skip):
+   - Locate 3–5 published papers in the same field that have a corresponding section (e.g., if writing §1 Intro, read their §1; if writing §4 Evaluation, read their evaluation).
+   - Sources: `plan/atc-reference-papers/` (downloaded PDFs), companion paper (`gemm_sp_paper/`), or fetch from arXiv/USENIX if needed.
+   - Extract with `pdftotext` the **first 30–60 lines** of the matching section from each paper.
+   - Observe: opening strategy, sentence rhythm, level of detail in ¶1 vs later ¶s, how they introduce numbers, how they frame significance.
+   - **Output**: a mental model of "what good looks like" for THIS section type at THIS venue. Do NOT copy prose — absorb structure and calibration.
+   - **Why**: Writing without reading exemplars produces AI-generic prose. Reading calibrates tone, density, and framing to venue norms.
+
+2. Read `references/systems-writing-patterns.md` (style guidance for HOW to write); `references/systems-sentence-bank.md` (structural templates); `references/systems-anti-patterns.md` (QC); `references/systems-eval-methodology.md` (§4 only)
+
+3. Choose Track A or B (default B for existing draft)
+4. Track B: reconcile → route issues
+5. Track A: L4 plan → approval → L5 write → tectonic
+6. QC R1 → R2 → R3 (respect deadline tier)
+7. Score anchors only; lint rest
+8. Update state file; hand `qc-pass` subsections to review
+9. Respect iteration budget and T-2 freeze
+
+**CRITICAL PRIORITY**: L3 storyline > reference papers > reference patterns. Reference papers calibrate density and framing; reference patterns guide sentence structure. The CONTENT and FOCUS of each paragraph is dictated by L3. If a pattern or exemplar conflicts with L3, follow L3.
