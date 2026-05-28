@@ -1,6 +1,6 @@
 ---
 name: paper-storyline
-description: "Use when writing, rewriting, or planning any section of the paper. Enforces a coarse-to-fine storyline alignment workflow: contributions → sections → subsections → paragraphs → writing plan → implementation, with mandatory human checkpoints at each layer."
+description: "Use when planning paper structure, aligning storyline, designing section/subsection layout, discussing what each paragraph should say, or when user says 'plan', 'storyline', 'align', 'restructure', 'what should §X say'. Coarse-to-fine workflow: contributions → sections → subsections → paragraphs → writing plan, with mandatory human checkpoints."
 ---
 
 # Paper Storyline Alignment
@@ -100,11 +100,10 @@ Is this correct? [Confirm / Reframe / Add / Remove]
 3. Present to user for confirmation.
 
 **Checkpoint format**:
-<!-- Hypothetical example — replace with your project's sections -->
 ```
 | § | Title | Pages | Job |
 |---|-------|-------|-----|
-| 1 | Introduction | 1.5 | Expose 4 problems → root cause → [System Name] → results |
+| 1 | Introduction | 1.5 | Expose 4 problems → root cause → CroqTile → results |
 | 2 | Background | 1.5 | Template paradigm + 3 failure dimensions |
 | ...
 
@@ -132,7 +131,6 @@ Total: X pages (target: Y). [Confirm / Adjust]
 3. Present to user for confirmation.
 
 **Checkpoint format** (per section):
-<!-- Hypothetical example — replace with your project's sections -->
 ```
 §3 Methodology:
   §3.1 Language Design (~8 paragraphs)
@@ -167,7 +165,6 @@ Total: X pages (target: Y). [Confirm / Adjust]
 4. Mark confirmed in state file.
 
 **Checkpoint format** (per subsection):
-<!-- Hypothetical example — replace with your project's sections -->
 ```
 §3.2 Compiler-Harness Co-design:
   ¶1: "The compiler is co-designed with the harness, not standalone."
@@ -194,54 +191,24 @@ Total: X pages (target: Y). [Confirm / Adjust]
 
 ## Layer 4: Writing Plan
 
-**Goal**: For each paragraph, specify exactly how to write it.
+**Owned by `academic-writing` skill.** After Layer 3 is confirmed, hand off to `academic-writing` for writing plan creation.
 
-**Protocol**:
-1. For each confirmed paragraph in Layer 3, specify:
-   - **Topic sentence** (exact wording, ~1 sentence)
-   - **Body content** (what to include: data points, citations, examples)
-   - **Form** (continuous prose / table / figure / equation / code listing)
-   - **Length** (~sentences or ~lines)
-   - **Style notes** (if any: e.g., "mechanism-first", "cite exact numbers")
-2. This is the "blueprint" — Layer 5 executes it mechanically.
-3. Usually done in batches (one subsection at a time).
+This skill only defines the handoff trigger: when L3 is confirmed in `plan/storyline-state.md`, the agent should activate `academic-writing` Track A or Track B as appropriate.
 
-**Checkpoint format** (per subsection):
-<!-- Hypothetical example — replace with your project's sections -->
-```
-§3.2 Compiler-Harness Co-design — Writing Plan:
-  ¶1 (3 sentences, prose): "The compiler is co-designed..."
-      Include: contrast with standalone compilers, mention two capabilities
-  ¶2 (5 sentences, prose + table ref): "353 static checks..."
-      Include: Table ref, 3-8s number, list check categories
-      Style: mechanism-first
-  ...
-
-[Approve plan / Adjust ¶X / Need more detail on ¶Y]
-```
-
-User approves the writing plan for a subsection, then agent proceeds to Layer 5 for that subsection without further confirmation (unless issues arise).
+**Re-alignment triggers from L4 back to L3** (this skill handles):
+- L4 writing plan contradicts L3 paragraph storyline → reopen L3
+- New evidence found during L4 planning → escalate to L2 or L0
 
 ---
 
 ## Layer 5: Implementation
 
-**Goal**: Write the actual LaTeX prose according to the Layer 4 plan.
+**Owned by `academic-writing` skill.** Do not write prose in this skill.
 
-**Protocol**:
-1. Write one subsection at a time.
-2. Follow the Layer 4 plan precisely.
-3. Apply prose quality rules from `research-writing-skill` and `de-ai-style.mdc`.
-4. After writing each subsection:
-   - Compile with `tectonic`
-   - Present a brief summary of what was written
-   - Ask user to review or continue to next subsection
-5. If during writing you discover the plan needs adjustment (e.g., data doesn't support a planned claim), STOP and re-align at the appropriate layer.
-
-**Red flags at this layer**:
-- Writing content not in the plan → stop, re-align at Layer 3-4
-- Data contradicts planned claim → stop, flag to user
-- Paragraph exceeding planned length by >50% → adjust
+**Re-alignment triggers from L5 back to higher layers** (this skill handles):
+- Written paragraph contradicts confirmed L3 → reopen L3
+- Number not in manifest → flag user, do not invent
+- Claim contradicts `research-methodology.mdc` → escalate to L0
 
 ---
 
@@ -249,7 +216,6 @@ User approves the writing plan for a subsection, then agent proceeds to Layer 5 
 
 Progress is tracked in `plan/storyline-state.md` with this format:
 
-<!-- Hypothetical example — replace with your project's sections -->
 ```markdown
 # Storyline State
 
@@ -333,39 +299,24 @@ After any significant writing, re-estimate page counts. If a section exceeds its
 
 ---
 
-## Toolchain Definitions
+## Best-of-N Subagent Mode
 
-Recommended tooling for paper compilation, figures, and data. Adapt tools to your project's stack. The key principle is: **source → generated output, never edit generated files directly**.
+**Budget**: See `best-of-N-protocol.md` § Session Budget before launching.
 
-### LaTeX Compilation
+See `best-of-N-protocol.md` for subagent launch pattern, selection protocol, and QC gates.
 
-- **Tool**: `tectonic` — auto-downloads packages, no full TeX Live install required
-- **Command**: `tectonic main.tex` from the paper directory
-- **Why for AI workflows**: single-command compilation, clear error output, reproducible builds across environments
+### L3 Storyline Proposals (N=5)
 
-### Figure Generation — Tool Selection by Type
+- **When**: Layer 3 — paragraph-level storyline for any section with ≥5 paragraphs
+- **Why**: Paragraph ordering has multiple valid strategies (chronological, most-important-first, problem-solution, general-to-specific). 5 proposals maximize narrative diversity.
+- **Constraints shared**: L2 subsection topic + job, C→M→E for this subsection, confirmed L1 page budget, design philosophy (可能→快→持续→实证)
+- **Creative latitude**: Paragraph ordering, tension arc, where to place the "aha moment", how to open the section (result-first vs setup-first vs contrast-first), bridge paragraph placement
+- **Each variant must**: Cover all L2 jobs; respect paragraph count target; each paragraph has a clear single job; paragraphs connect to contributions
+- **Selection**: Author picks the narrative arc that best serves their story. May hybridize: "Take V2's opening but V4's closing."
 
-| Figure Type | Tool | Input → Output | When to use |
-|-------------|------|----------------|-------------|
-| Data-heavy plots (bar charts, line charts, scatter with many points, sweeps) | Python + matplotlib | `.py` → `.pdf` | Quantitative data from experiments, performance comparisons |
-| Architectural/conceptual diagrams (convergence with annotations, simple bar/scatter with styled markers) | D3.js + JSDOM (Node.js) | `.js` → `.svg` → `.pdf` | Styled diagrams needing precise visual control |
-| System architecture diagrams (flow charts, block diagrams) | TikZ (in LaTeX) | inline in `.tex` | Process flows, system overviews, tight integration with text layout |
-| External/reference figures | Direct inclusion | `.pdf` or `.svg` | Figures from companion papers or external sources |
+### Cost Awareness
 
-### Figure Conventions
-
-- **Font**: match LaTeX body font (e.g., CMU Serif / Computer Modern)
-- **Colors**: use a consistent academic palette (~6 colors defined once, reused everywhere)
-- **SVG → PDF**: convert with `cairosvg` or `rsvg-convert`
-- **Layout**: source in `figures/src/`, output in `figures/out/`
-- **Regeneration**: never edit output directly — always regenerate from source
-
-### Data Management
-
-- **Raw experimental data**: `data/raw/` or `data/` (TSV/CSV)
-- **Processed/aggregated data**: `data/processed/`
-- **Figure scripts**: reference data files by relative path from the script location
-- **Placeholders**: mark incomplete or synthetic data with `TODO` comments so gaps are visible during review
+L3 best-of-5 costs ~5× tokens vs single proposal. Confirm before launch unless user already asked for storyline proposals at L3. See `best-of-N-protocol.md` § Cost Awareness.
 
 ---
 
@@ -373,12 +324,15 @@ Recommended tooling for paper compilation, figures, and data. Adapt tools to you
 
 | Skill | Relationship |
 |-------|------|
-| `research-writing-skill` | Handles prose quality (de-AI, academic style). Activated DURING Layer 5. |
+| `author-supervisor` | Embedded advisor ensemble — invoke at any layer checkpoint for 5 parallel professor perspectives (P1 systems, P2 methodology, P3 writing, P4 strategy, P5 pragmatics). Advisory only; does not override layer confirmations. |
+| `academic-writing` | Owns Layer 4–5 execution, QC, and prose quality. Activate after L3 confirmed in `plan/storyline-state.md`. |
+| `paper-review` | Downstream reviewer simulation and submission gate. Activate after subsections reach `qc-pass`. |
+| `research-writing-skill` | Generic prose guidance; CroqTile L4–5 defers to `academic-writing`. |
 | `ralph-loop-request` / `durable-request` | Handles turn-ending checkpoints. This skill's layer checkpoints are ADDITIONAL to those. |
 | `paper-writing.mdc` (rule) | Provides LaTeX conventions. Always applies during Layer 5. |
-| `de-ai-style.mdc` (rule) | Provides style rules. Always applies during Layer 5. |
+| `de-ai-style.mdc` (rule) | Provides style rules. Always applies during Layer 5 (via `academic-writing` QC Round 3). |
 
-**Priority**: This skill's structural alignment takes precedence over writing. If storyline is unconfirmed, do NOT write — align first.
+**Priority**: This skill's structural alignment takes precedence over writing. If storyline is unconfirmed, do NOT write — align first. After L3 confirmation, hand off Layers 4–5 to `academic-writing`. At any layer, optionally invoke `author-supervisor` for 5 professor perspectives before confirming.
 
 ---
 
@@ -398,8 +352,8 @@ Recommended tooling for paper compilation, figures, and data. Adapt tools to you
 | 1 | Propose section outline + pages | Confirm/Adjust | Confirmed outline |
 | 2 | Propose subsection breakdown | Confirm/Adjust | Confirmed subsection map |
 | 3 | Propose paragraph storyline | Confirm/Reorder | Confirmed paragraph flow |
-| 4 | Propose writing plan | Approve | Blueprint for writing |
-| 5 | Write LaTeX | Review/Iterate | Final prose |
+| 4 | Hand off to `academic-writing` Track A/B | Approve | Blueprint for writing |
+| 5 | (Owned by `academic-writing` — not this skill) | Review/Iterate | Final prose |
 
 ---
 
