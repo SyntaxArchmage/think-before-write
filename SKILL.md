@@ -333,6 +333,42 @@ After any significant writing, re-estimate page counts. If a section exceeds its
 
 ---
 
+## Toolchain Definitions
+
+Recommended tooling for paper compilation, figures, and data. Adapt tools to your project's stack. The key principle is: **source → generated output, never edit generated files directly**.
+
+### LaTeX Compilation
+
+- **Tool**: `tectonic` — auto-downloads packages, no full TeX Live install required
+- **Command**: `tectonic main.tex` from the paper directory
+- **Why for AI workflows**: single-command compilation, clear error output, reproducible builds across environments
+
+### Figure Generation — Tool Selection by Type
+
+| Figure Type | Tool | Input → Output | When to use |
+|-------------|------|----------------|-------------|
+| Data-heavy plots (bar charts, line charts, scatter with many points, sweeps) | Python + matplotlib | `.py` → `.pdf` | Quantitative data from experiments, performance comparisons |
+| Architectural/conceptual diagrams (convergence with annotations, simple bar/scatter with styled markers) | D3.js + JSDOM (Node.js) | `.js` → `.svg` → `.pdf` | Styled diagrams needing precise visual control |
+| System architecture diagrams (flow charts, block diagrams) | TikZ (in LaTeX) | inline in `.tex` | Process flows, system overviews, tight integration with text layout |
+| External/reference figures | Direct inclusion | `.pdf` or `.svg` | Figures from companion papers or external sources |
+
+### Figure Conventions
+
+- **Font**: match LaTeX body font (e.g., CMU Serif / Computer Modern)
+- **Colors**: use a consistent academic palette (~6 colors defined once, reused everywhere)
+- **SVG → PDF**: convert with `cairosvg` or `rsvg-convert`
+- **Layout**: source in `figures/src/`, output in `figures/out/`
+- **Regeneration**: never edit output directly — always regenerate from source
+
+### Data Management
+
+- **Raw experimental data**: `data/raw/` or `data/` (TSV/CSV)
+- **Processed/aggregated data**: `data/processed/`
+- **Figure scripts**: reference data files by relative path from the script location
+- **Placeholders**: mark incomplete or synthetic data with `TODO` comments so gaps are visible during review
+
+---
+
 ## Integration with Other Skills
 
 | Skill | Relationship |
