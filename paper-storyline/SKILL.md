@@ -53,6 +53,27 @@ Confirmation is tracked in `plan/storyline-state.md`.
 
 ---
 
+## Initialization: Venue Reference Corpus (run ONCE at project start)
+
+**Goal**: Before any storyline work begins, ensure a local corpus of 8–12 reference papers from the target venue exists. These serve as calibration exemplars throughout all subsequent layers and writing.
+
+**Protocol**:
+1. Identify the target venue and year (e.g., ATC 2026, OSDI 2025, ASPLOS 2026).
+2. Download 8–12 full papers (PDF) from the venue's recent proceedings (mix of 2 most recent years). Selection criteria:
+   - 5+ papers topically adjacent (same subfield)
+   - 3+ papers from the venue that are well-written but in different subfields (for general venue style calibration)
+3. Store in `plan/<venue>-reference-papers/` with a `manifest.md` listing title, authors, page count, topic.
+4. Extract key structural metadata: average page count, section naming conventions, typical section distribution (intro length, eval length, related work placement).
+5. Record venue formatting rules (page limit, column format, style file) in `plan/storyline-state.md` or a separate `plan/venue-constraints.md`.
+
+**When to re-run**: Only if the target venue changes (e.g., switching from ATC to OSDI).
+
+**Why this matters**: Every downstream step — from page budget (Layer 1) to paragraph density calibration (Layer 5) — depends on knowing what the venue expects. Without exemplars, the agent defaults to generic academic prose that may be too dense, too sparse, or structurally inappropriate for the venue.
+
+**Integration with `academic-writing` skill**: Step 1 of the Session Checklist ("Read reference papers for the target section") consumes this corpus. If the corpus doesn't exist when writing starts, the agent MUST run this initialization first.
+
+---
+
 ## Layer 0: Core Claim + Contributions
 
 **Goal**: Agree on what the paper claims and what its contributions are.
