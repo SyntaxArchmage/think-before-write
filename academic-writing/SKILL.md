@@ -111,6 +111,25 @@ For each L3 paragraph, produce:
 5. **Terminology lock** — terms match Terminology Matrix in `croqtile-templates.md`.
 6. **Number provenance** — every numeric claim traceable to `data/processed/` manifest entry OR explicit citation.
 
+<EXTREMELY-IMPORTANT>
+**Sentence-level rules** (from writing-core — MANDATORY for all L5 prose):
+
+1. **One core action per sentence.** If a sentence does two things, split it.
+2. **Alternate long and short sentences.** Never write 3+ consecutive sentences of similar length.
+3. **Semantic connection, not template connection.** The content of the previous sentence leads into the next — no "Furthermore", "Moreover", "Additionally", "In summary", "It is worth noting".
+4. **Data replaces adjectives.** Never write "significant improvement" without a number. Never "substantial overhead" without milliseconds or percentage.
+5. **No empty filler.** Delete any sentence that could be removed without information loss.
+
+**Banned English patterns** (de-AI, instant reject):
+| Type | Banned phrases |
+|------|---------------|
+| Mechanical transitions | Furthermore, Moreover, Additionally, In addition, It should be noted, Notably |
+| Empty emphasis | It is worth noting, The key insight is, Importantly, Significantly |
+| Vague modifiers (without data) | substantial, considerable, significant, dramatic, remarkable |
+| Meta-commentary | In this section we, As mentioned above, As discussed earlier |
+| Filler openings | In order to, It is important to, There is a need for |
+</EXTREMELY-IMPORTANT>
+
 Checkpoint (Track A only):
 ```
 §X.Y — Writing Plan (N paragraphs)
